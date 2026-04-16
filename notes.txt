@@ -1,0 +1,84 @@
+#### 2map ####
+{
+___
+lexer, scanning, lexing, lexical analysis:
+chars => tokens
+tokens: 'words'
+___
+parser, parsing, grammar:
+
+tokens => tree
+tree, parse tree, abstract syntax tree, ast: 'tree of tokens organized by grammar'
+___
+Static_analysis
+
+binding / resolution
+
+identifier-name (scope)
+type error: identifier-name not found in scope
+
+identifier can be:
+- attributes:	extra fields on ast nodes
+- symbol table:	hashmap, key:name,value:value
+
+}='front end'
+
+{
+___
+intermediate representation, IR:
+human readable => IR => machine readable
+___
+optimization:
+
+constant folding: 3.0/4 = .75
+
+}='middle end'
+
+{
+___
+generating code, code gen:
+
+tree=>bytecode
+bytecode, p-code: idealizedasm, fakeasm
+
+bytecode
+=> direct asm
+=> virtual machine => (through other lang) asm
+___
+virtual machine, VM:
+
+emulator of bytecode chip
+
+___
+runtime:
+
+interpreted language stuff (garbage collector, etc)
+
+}='back end'
+
+
+alternatives
+___
+single-pass_compilers:
+chars => tokens => bytecode or direct
+___
+tree-walk_interpreters:
+tokens=>tree=>direct (Static_analysis)
+(running tree as building tree)
+___
+transpiler,source-to-source compiler,transcompiler:
+(lang to other lang)
+lang1 chars=>tokens=>tree
+(same)=>(skip stuff) lang2
+(diff)=>middle end=>lang2
+___
+just-in-time, jit:
+=>virtual machine=>asm
+....
+___
+compiler
+chars=>structure
+___
+interpreter
+chars=>execute
+
