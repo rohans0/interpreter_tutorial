@@ -1,4 +1,5 @@
 use std::env;
+use std::io::Write;
 use std::process;
 use std::io;
 use std::fs;
@@ -17,33 +18,44 @@ impl<'a> Scanner<'a> {
     }
 }
 
-fn run(source: &str) {
+fn run(source: &str) -> io::Result<()> {
     let mut scanner = Scanner {
         source: source
     };
     let tokens: Vec<Token> = scanner.scan_tokens();
-    
+
     for t in tokens {
         println!("{:?}",t);
     }
-}
-
-fn run_file(path: &str) -> io::Result<()> {
-    run(&fs::read_to_string(path)?);
     Ok(())
 }
 
-fn run_prompt() -> io::Result<()> {
+fn error(line: i32, message: &str) {
+    report(line,"",message);
+}
+
+fn report(line: i32, place: &str, message: &str) {
+    println!("[line {}] Error {}: {}", line, place, message);
+}
+
+fn run_file(path: &str) -> io::Result<()> {
+    if let Err(_) = run(&fs::read_to_string(path)?) {
+        process::exit(65);
+    }
+    Ok(())
+}
+
+fn run_prompt() {
     let reader = io::stdin();
     let mut line = String::new();
 
     loop {
-        line.clear();
         print!("> ");
-        if reader.read_line(&mut line)? == 0 {break;}
-        run(line.trim());
+        let _ = io::stdout().flush();
+        line.clear();
+        if reader.read_line(&mut line).unwrap_or(0) == 0 {break}
+        let _ = run(line.trim());
     }
-    Ok(())
 }
 
 fn main() {
@@ -53,13 +65,12 @@ fn main() {
         process::exit(64);
     }
     else if args.len() == 1 {
-        if let Err(_) = run_file(&args[0]) {
-            println!("error");
+        if let Err(e) = run_file(&args[0]) {
+            eprintln!("File error: {}", e);
+            process::exit(66);
         }
     }
     else {
-        if let Err(_) = run_prompt() {
-            println!("error");
-        }
+        run_prompt();
     }
 }
