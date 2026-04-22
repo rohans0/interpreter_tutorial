@@ -4,37 +4,29 @@ use std::process;
 use std::io;
 use std::fs;
 
-#[derive(Debug)]
-enum Token {
-}
+mod scanner;
+mod token;
 
-struct Scanner<'a> {
-    source: &'a str
-}
+use crate::scanner::Scanner;
+use crate::token::Token;
 
-impl<'a> Scanner<'a> {
-    fn scan_tokens(&mut self) -> Vec<Token> {
-        Vec::new()
-    }
-}
 
 fn run(source: &str) -> io::Result<()> {
-    let mut scanner = Scanner {
-        source: source
-    };
+    let mut scanner = Scanner::new(source);
+
     let tokens: Vec<Token> = scanner.scan_tokens();
 
     for t in tokens {
-        println!("{:?}",t);
+        println!("{}",t);
     }
     Ok(())
 }
 
-fn error(line: i32, message: &str) {
+fn error(line: u32, message: &str) {
     report(line,"",message);
 }
 
-fn report(line: i32, place: &str, message: &str) {
+fn report(line: u32, place: &str, message: &str) {
     println!("[line {}] Error {}: {}", line, place, message);
 }
 
