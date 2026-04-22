@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug,Clone,Copy)]
 pub enum TokenType {
     // Single-character tokens.
     LeftParen,
@@ -49,15 +49,22 @@ pub enum TokenType {
     Eof,
 }
 
+#[derive(Debug)]
+pub enum Value<'a> {
+    Number(f64),
+    String(&'a str),
+    None
+}
+
 pub struct Token<'a> {
     tokentype: TokenType,
     lexeme: &'a str,
-    literal: u8,
+    literal: Value<'a>,
     line: u32,
 }
 
 impl<'a> Token<'a> {
-    pub fn new(tokentype: TokenType, lexeme: &'a str, literal: u8, line: u32) -> Self {
+    pub fn new(tokentype: TokenType, lexeme: &'a str, literal: Value<'a>, line: u32) -> Self {
         Self {
             tokentype,
             lexeme,
@@ -69,6 +76,6 @@ impl<'a> Token<'a> {
 
 impl<'a> std::fmt::Display for Token<'a> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?} {} {}", self.tokentype, self.lexeme, self.literal)
+        write!(f, "{:?} {} {:?}", self.tokentype, self.lexeme, self.literal)
     }
 }
