@@ -57,7 +57,7 @@ impl<'a> Scanner<'a> {
         c
     }
 
-    fn advance_check(&mut self, expected: char) -> bool {
+    fn advance_match(&mut self, expected: char) -> bool {
         match self.is_at_end() {
             true => false,
             false => {
@@ -104,19 +104,19 @@ impl<'a> Scanner<'a> {
             '+' => TokenType::Plus,
             ';' => TokenType::Semicolon,
             '*' => TokenType::Star,
-            '!' => match self.advance_check('=') {
+            '!' => match self.advance_match('=') {
                 true => TokenType::BangEqual,
                 false => TokenType::Bang,
             },
-            '=' => match self.advance_check('=') {
+            '=' => match self.advance_match('=') {
                 true => TokenType::EqualEqual,
                 false => TokenType::Equal,
             },
-            '>' => match self.advance_check('=') {
+            '>' => match self.advance_match('=') {
                 true => TokenType::GreaterEqual,
                 false => TokenType::Greater,
             },
-            '<' => match self.advance_check('=') {
+            '<' => match self.advance_match('=') {
                 true => TokenType::LessEqual,
                 false => TokenType::Less,
             },

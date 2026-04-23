@@ -1,3 +1,6 @@
+// ch5.4 - UNUSED FILE
+// created for "practice" (oops)
+
 use std::env;
 use std::fs::File;
 use std::io;

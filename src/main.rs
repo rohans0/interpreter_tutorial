@@ -6,6 +6,7 @@ use std::fs;
 
 mod scanner;
 mod token;
+mod parser;
 
 use crate::scanner::Scanner;
 use crate::token::Token;
