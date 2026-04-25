@@ -1,4 +1,4 @@
-#[derive(Debug,Clone,Copy)]
+#[derive(Debug,Clone,Copy,PartialEq)]
 pub enum TokenType {
     // Single-character tokens.
     LeftParen,
@@ -57,7 +57,7 @@ pub enum Value<'a> {
 }
 
 pub struct Token<'a> {
-    tokentype: TokenType,
+    pub tokentype: TokenType,
     lexeme: &'a str,
     literal: Value<'a>,
     line: u32,
